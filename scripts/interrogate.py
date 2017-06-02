@@ -13,14 +13,15 @@ from panda3d.core import PandaSystem
 from common import debug_out, get_panda_bin_path, get_panda_include_path
 from common import get_compiler_name, is_64_bit, try_execute, join_abs, get_script_dir
 
-if len(sys.argv) != 3:
-    debug_out("Usage: python interrogate.py <module-name> <verbose-level>")
+if len(sys.argv) != 4:
+    debug_out("Usage: python interrogate.py <module-name> <verbose-level> <source-location>")
     sys.exit(1)
 
 
 # Parameters
 MODULE_NAME = sys.argv[1]
 VERBOSE_LVL = int(sys.argv[2])  # Assume the user did specify something valid
+SOURCE_LOC = sys.argv[3]
 
 
 def check_ignore(source):
@@ -44,14 +45,26 @@ def find_sources(base_dir):
         elif isdir(fpath):
             sources += find_sources(fpath)
     return sources
-
+    
+def get_sources(source_dir):
+    sources = []
+    files = listdir(source_dir)
+    for f in files:
+        fpath = join(source_dir, f)
+        sources.append(fpath)
+    return sources
 
 def interrogate():
     """ Runs interrogate over the source directory """
 
     # Collect source files and convert them to a relative path
-    all_sources = find_sources(".")
-
+    if SOURCE_LOC:
+        all_sources = get_sources(SOURCE_LOC)
+    else:
+        all_sources = find_sources(".")
+    
+    #print(all_sources)
+    
     # Create the interrogate command
     cmd = [join(get_panda_bin_path(), 'interrogate')]
 
@@ -130,6 +143,8 @@ if __name__ == "__main__":
 
     # Change into the source directory
     source_dir = join(get_script_dir(), "../source/")
+    if SOURCE_LOC:
+        source_dir = join(get_script_dir(), "../", SOURCE_LOC)
     chdir(source_dir)
 
     interrogate()

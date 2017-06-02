@@ -23,6 +23,9 @@ if __name__ == "__main__":
         help="Optimize level, should match the one used for the Panda3D build",)
     parser.add_argument(
         "--clean", action="store_true", help="Forces a clean rebuild")
+    parser.add_argument(
+        "--source-dir", type=str, default="source",
+        help="Relative path for sources.")
     args = parser.parse_args()
 
     # Python 2 compatibility

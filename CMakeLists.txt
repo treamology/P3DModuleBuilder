@@ -35,6 +35,10 @@ set(CMAKE_CXX_FLAGS_MINSIZEREL "")
 
 set(LIBRARIES "")
 
+if (SOURCE_LOC STREQUAL "")
+	set(SOURCE_LOC "source")
+endif()
+
 # Windows - 32 and 64 bit
 if (WIN32)
   if (CMAKE_CL_64 STREQUAL "1")
@@ -254,7 +258,7 @@ include_directories("${PYTHON_INCLUDE_DIRS}")
 
 # Run interrogate over the files
 execute_process(
-    COMMAND "${PYTHON_EXECUTABLE}" "-B" "scripts/interrogate.py" "${PROJECT_NAME}" "${IGATE_VERBOSE}"
+    COMMAND "${PYTHON_EXECUTABLE}" "-B" "scripts/interrogate.py" "${PROJECT_NAME}" "${IGATE_VERBOSE}" "${SOURCE_LOC}"
     OUTPUT_VARIABLE output
     ERROR_VARIABLE errors
     RESULT_VARIABLE return_code
@@ -367,12 +371,12 @@ add_definitions("/DPB_MODULE=${PROJECT_NAME}")
 add_definitions("/DPB_CFG_MODULE=${PROJECT_NAME}")
 
 # Collect sources for compiling
-file(GLOB_RECURSE SOURCES source/*.cpp source/*.cxx source/*.I source/*.hpp source/*.h source/*.cc source/*.c)
-include_directories("source/")
+file(GLOB_RECURSE SOURCES ${SOURCE_LOC}/*.cpp ${SOURCE_LOC}/*.cxx ${SOURCE_LOC}/*.I ${SOURCE_LOC}/*.hpp ${SOURCE_LOC}/*.h ${SOURCE_LOC}/*.cc ${SOURCE_LOC}/*.c)
+include_directories("${SOURCE_LOC}/")
 set(SOURCES ${SOURCES_H} ${SOURCES})
 
 # Collect subdirs for compiling
-file(GLOB POSSIBLE_DIRS RELATIVE ${CMAKE_CURRENT_LIST_DIR} source/*)
+file(GLOB POSSIBLE_DIRS RELATIVE ${CMAKE_CURRENT_LIST_DIR} ${SOURCE_LOC}/*)
 foreach(PDIR ${POSSIBLE_DIRS})
   if (IS_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/${PDIR})
     include_directories("${PDIR}")
