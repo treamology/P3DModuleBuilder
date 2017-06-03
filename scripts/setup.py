@@ -139,7 +139,9 @@ def run_cmake(config, args):
     cmake_args += ["-DOPTIMIZE=" + str(optimize)]
     
     if args.source_dir:
-        cmake_args += ["-DSOURCE_LOC=" + str(args.source_dir)]
+        cmake_args += ["-DSOURCE_LOC=" + args.source_dir]
+    if args.output_dir:
+        cmake_args += ["-DOUTPUT_DIR=" + args.output_dir]
 
     output = try_execute("cmake", join_abs(get_script_dir(), ".."), *cmake_args, error_formatter=handle_cmake_error)
 

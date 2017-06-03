@@ -26,6 +26,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--source-dir", type=str, default="source",
         help="Relative path for sources.")
+    parser.add_argument(
+        "--output-dir", type=str, help="Where the final pyd will be located")
     args = parser.parse_args()
 
     # Python 2 compatibility

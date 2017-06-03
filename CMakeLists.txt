@@ -421,7 +421,7 @@ endif()
 add_custom_command(
     TARGET ${PROJECT_NAME}
     POST_BUILD
-    COMMAND "${PYTHON_EXECUTABLE}" "-B" "${CMAKE_CURRENT_LIST_DIR}/scripts/finalize.py" "${PROJECT_NAME}"
+    COMMAND "${PYTHON_EXECUTABLE}" "-B" "${CMAKE_CURRENT_LIST_DIR}/scripts/finalize.py" "${PROJECT_NAME}" "${OUTPUT_DIR}"
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 
 # Make shared library paths absolute on macOS
