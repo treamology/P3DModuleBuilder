@@ -51,7 +51,12 @@ def get_sources(source_dir):
     files = listdir(source_dir)
     for f in files:
         fpath = join(source_dir, f)
-        sources.append(fpath)
+        if isfile(fpath) and check_ignore(f) and f.endswith(".h"):
+            if f.endswith(".pb.h"):
+                continue # Skip protobuf
+            sources.append(fpath)
+        elif isdir(fpath):
+            sources += find_sources(fpath)
     return sources
 
 def interrogate():
