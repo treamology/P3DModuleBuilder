@@ -36,7 +36,12 @@ set(CMAKE_CXX_FLAGS_MINSIZEREL "")
 set(LIBRARIES "")
 
 if (SOURCE_LOC STREQUAL "")
-	set(SOURCE_LOC "source")
+  mset(SOURCE_LOC "source")
+endif()
+
+if (OPTIMIZE STREQUAL "1")
+  set(DEBUG TRUE)
+  set(DEBUG_SUFFIX "_d")
 endif()
 
 # Windows - 32 and 64 bit
@@ -69,7 +74,6 @@ if (WIN32)
   if (IS_32_BIT)
     set(THIRDPARTY_SUFFIX "")
   endif()
-
 
 
   # Find visual studio version
@@ -107,7 +111,7 @@ if (WIN32)
     message(WARNING "Panda3D library directory does not exist! Expected it at: ${PANDA_LIBRARY_DIRS}")
   endif()
 
-  set(PYTHON_LIBRARIES "${WIN_PANDA_PATH}/python/libs/python${PYTHONVER}.lib")
+  set(PYTHON_LIBRARIES "${WIN_PANDA_PATH}/python/libs/python${PYTHONVER}${DEBUG_SUFFIX}.lib")
   set(PYTHON_INCLUDE_DIRS "${WIN_PANDA_PATH}/python/include")
 
   # [LIB] Bullet
@@ -163,7 +167,7 @@ if (WIN32)
   endforeach()
 
   # Link panda libraries
-  set(PANDA_LIBRARIES "libp3framework;libpanda;libpandaexpress;libp3dtool;libp3dtoolconfig;libp3direct;${INTERROGATE_LIB}")
+  set(PANDA_LIBRARIES "libp3framework${DEBUG_SUFFIX};libpanda${DEBUG_SUFFIX};libpandaexpress${DEBUG_SUFFIX};libp3dtool${DEBUG_SUFFIX};libp3dtoolconfig${DEBUG_SUFFIX};libp3direct${DEBUG_SUFFIX};${INTERROGATE_LIB}${DEBUG_SUFFIX}")
   if(HAVE_LIB_BULLET)
     set(PANDA_LIBRARIES "libpandabullet;${PANDA_LIBRARIES}")
   endif()
