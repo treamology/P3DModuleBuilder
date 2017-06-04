@@ -59,7 +59,7 @@ def run_cmake(config, args):
 
     configuration = "Release"
     if config["generate_pdb"].lower() in ["1", "true", "yes", "y"]:
-        configuration = "RelWithDebInfo"
+        configuration = "Debug"
 
     cmake_args = ["-DCMAKE_BUILD_TYPE=" + configuration]
     cmake_args += ["-DPYTHON_EXECUTABLE:STRING=" + sys.executable]
@@ -142,6 +142,8 @@ def run_cmake(config, args):
         cmake_args += ["-DSOURCE_LOC=" + args.source_dir]
     if args.output_dir:
         cmake_args += ["-DOUTPUT_DIR=" + args.output_dir]
+    if args.panda_path:
+        cmake_args += ["-DWIN_PANDA_PATH=" + args.panda_path]
 
     output = try_execute("cmake", join_abs(get_script_dir(), ".."), *cmake_args, error_formatter=handle_cmake_error)
 
@@ -151,7 +153,7 @@ def run_cmake_build(config, args):
 
     configuration = "Release"
     if config["generate_pdb"].lower() in ["1", "true", "yes", "y"]:
-        configuration = "RelWithDebInfo"
+        configuration = "Debug"
 
     # get number of cores, leave one for the system though
     num_cores = max(1, multiprocessing.cpu_count() - 1)

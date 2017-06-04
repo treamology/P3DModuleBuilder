@@ -28,6 +28,8 @@ if __name__ == "__main__":
         help="Relative path for sources.")
     parser.add_argument(
         "--output-dir", type=str, help="Where the final pyd will be located")
+    parser.add_argument(
+        "--panda-path", type=str, help="Where the Panda3D libraries are located")
     args = parser.parse_args()
 
     # Python 2 compatibility

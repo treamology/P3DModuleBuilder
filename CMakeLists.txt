@@ -5,7 +5,7 @@ cmake_minimum_required (VERSION 2.6)
 project (${PROJECT_NAME})
 
 # Project configuration
-set(CMAKE_BUILD_TYPE "Release")
+#set(CMAKE_BUILD_TYPE "Release")
 
 # Libraries and options set by the module builder
 set(HAVE_LIB_EIGEN CACHE BOOL TRUE)
@@ -53,13 +53,16 @@ if (WIN32)
 
   set(PYTHONVER CACHE STRING "27")
 
-  # Find panda path
-  execute_process(
+  if (NOT (EXISTS ${WIN_PANDA_PATH}))
+    # Find panda path
+	execute_process(
     COMMAND "${PYTHON_EXECUTABLE}" "-B" "scripts/common.py" "--print-sdk-path"
     OUTPUT_VARIABLE WIN_PANDA_PATH
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
-  message(STATUS "Detected panda3d installation: ${WIN_PANDA_PATH}")
-
+    message(STATUS "Detected panda3d installation: ${WIN_PANDA_PATH}")
+  else()
+	message(STATUS "Passed panda3d installation: ${WIN_PANDA_PATH}")
+  endif()
 
   # Determine bitness
   set(THIRDPARTY_SUFFIX "-x64")
