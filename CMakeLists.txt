@@ -25,6 +25,7 @@ set(THIRDPARTY_WIN_DIR CACHE STRING "")
 set(ENABLE_SSE2 CACHE BOOL 1)
 set(TOUCHINPUT_ENABLED CACHE BOOL 0)
 
+set(PANDA_DIR_HINT CACHE STRING "")
 
 # --- End of user variables --
 
@@ -199,9 +200,8 @@ else()
     set(REQ_LIBRARIES pandabullet ${REQ_LIBRARIES})
   endif()
 
-  set(PANDA_LIBRARIES "")
   foreach (lib ${REQ_LIBRARIES})
-    find_library(PANDA_LIBRARY_${lib} ${lib} PATH_SUFFIXES panda3d)
+    find_library(PANDA_LIBRARY_${lib} ${lib} PATH_SUFFIXES panda3d HINTS ${PANDA_DIR_HINT})
     set(PANDA_LIBRARIES "${PANDA_LIBRARIES};${PANDA_LIBRARY_${lib}}")
   endforeach()
 

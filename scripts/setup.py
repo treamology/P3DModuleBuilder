@@ -132,6 +132,9 @@ def run_cmake(config, args):
              fatal_error("Your Panda3D build was not compiled with freetype support, but it is required!")
         cmake_args += ["-DHAVE_LIB_FREETYPE=TRUE"]
 
+    if args.pandahint is not None:
+        cmake_args += ["-DPANDA_DIR_HINT=" + args.pandahint]
+
     # Optimization level
     optimize = 3
 
